@@ -31,7 +31,7 @@ class image_converter:
     #    cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
     #except CvBridgeError as e:
     #    print(e)
-    cv_image = cv2.imread("rgb6.png", cv2.IMREAD_COLOR)
+    cv_image = cv2.imread("image.png", cv2.IMREAD_COLOR)
     #cv2.imshow(cv_image, cv2.IMREAD_COLOR)
 
     #make it gray
