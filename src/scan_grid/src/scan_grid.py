@@ -5,6 +5,8 @@ import rospy
 from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import LaserScan
 from math import sin, cos
+from sklearn import linear_model, datasets
+import numpy as np
 
 # --- definitions ---
 def resetGrid():
@@ -33,15 +35,15 @@ def default_values():
     global occupancy_grid
     # init occupancy grid
     occupancy_grid = OccupancyGrid()
-    #occupancy_grid.header.frame_id = "map" #"laser"
+    occupancy_grid.header.frame_id = "laser"
     #occupancy_grid.info.resolution = None # in m/cell
-    occupancy_grid.info.resolution = 0.35 # in m/cell
+    occupancy_grid.info.resolution = 0.15 # in m/cell
 
     # width x height cells
     #occupancy_grid.info.width = None
     #occupancy_grid.info.height = None
-    occupancy_grid.info.width = 600
-    occupancy_grid.info.height = 600
+    occupancy_grid.info.width = 800
+    occupancy_grid.info.height = 800
 
     # origin is shifted at half of cell size * resolution
     occupancy_grid.info.origin.position.x = int(-1.0 * occupancy_grid.info.width / 2.0) * occupancy_grid.info.resolution
@@ -62,16 +64,39 @@ def scanCallback(scan_msg):
     resetGrid()
 
     # convert scan measurements into an occupancy grid    
+    #<>
     ranges = scan_msg.ranges
     angle = scan_msg.angle_min
     incr = scan_msg.angle_increment
+    Xs, ys = [], []
     for r in ranges:
-        if r != float("inf"):
-            r = r / occupancy_grid.info.resolution
+        constraint = angle > 0.7 and angle < 2.8
+        if constraint and r != float("inf"):
+            #r = r / occupancy_grid.info.resolution
             x = sin(angle) * r
             y = cos(angle) * r
-            setCell(x, y)
+            if True:#y < 0.2*x and y > -2*x and y < 0:
+                setCell(x, y)
+                Xs.append(x)
+                ys.append(y)
         angle += incr
+
+    if len(Xs) > 0 and len(ys) > 0:
+        Xs = np.array(Xs).reshape(len(Xs), 1)
+        ys = np.array(ys).reshape(len(ys), 1)
+
+        model_ransac = linear_model.RANSACRegressor(linear_model.LinearRegression())
+        try:
+            #model_ransac.fit(Xs, ys)
+            model_ransac.fit(ys, Xs)
+            print("Coeffs: ", model_ransac.estimator_.coef_)
+        except:
+            print("NOT ENOUGH POINTS!")
+
+        
+
+#    for i in range(occupancy_grid.info.width):
+#        setCell(i, 
 
     pub_grid.publish(occupancy_grid)
 
