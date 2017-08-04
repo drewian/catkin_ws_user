@@ -37,13 +37,13 @@ def default_values():
     occupancy_grid = OccupancyGrid()
     occupancy_grid.header.frame_id = "laser"
     #occupancy_grid.info.resolution = None # in m/cell
-    occupancy_grid.info.resolution = 0.15 # in m/cell
+    occupancy_grid.info.resolution = 0.1 # in m/cell
 
     # width x height cells
     #occupancy_grid.info.width = None
     #occupancy_grid.info.height = None
-    occupancy_grid.info.width = 800
-    occupancy_grid.info.height = 800
+    occupancy_grid.info.width = 900
+    occupancy_grid.info.height = 900
 
     # origin is shifted at half of cell size * resolution
     occupancy_grid.info.origin.position.x = int(-1.0 * occupancy_grid.info.width / 2.0) * occupancy_grid.info.resolution
@@ -70,7 +70,7 @@ def scanCallback(scan_msg):
     incr = scan_msg.angle_increment
     Xs, ys = [], []
     for r in ranges:
-        constraint = angle > 0.7 and angle < 2.8
+        constraint = angle < -0.5 and angle > -2.4
         if constraint and r != float("inf"):
             #r = r / occupancy_grid.info.resolution
             x = sin(angle) * r
