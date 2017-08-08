@@ -1,0 +1,138 @@
+#!/usr/bin/env python
+import roslib
+# roslib.load_manifest('my_package')
+import sys
+import rospy
+import cv2
+import numpy as np
+from std_msgs.msg import String, Int16, Float32
+from sensor_msgs.msg import Image
+from nav_msgs.msg import Odometry
+from cv_bridge import CvBridge, CvBridgeError
+#import matplotlib
+from time import sleep
+from math import atan2, sqrt
+#matplotlib.use('Agg')
+#from matplotlib import pyplot as plt
+
+bridge = CvBridge()
+imageWindow = None
+minDistance = 500
+maxDistance = 700
+lastOdom = None
+
+
+def odomCallback(odom_msg):
+    global lastOdom
+    lastOdom = odom_msg
+
+def imgCallback(img_msg):
+    global bridge, imageWindow, lastOdom
+
+    if lastOdom == None: return
+
+    print("Callback received!")
+    drivePub.publish(0)
+    steerPub.publish(70)
+    cv_img = bridge.imgmsg_to_cv2(img_msg, "passthrough")
+    cv_img = cv2.resize(cv_img, None, fx=0.25, fy=0.25, interpolation=cv2.INTER_LINEAR)
+    height = cv_img.shape[0]
+    width = cv_img.shape[1]
+
+
+    lowerBound = 100
+    higherBound = 4000
+    
+#    copy = cv_img
+#    cv_img = cv2.resize(cv_img, scaled_dims)
+#    #cv2.imshow("gps", cv_img)
+#    cv2.imshow("depth", cv_img)
+#    cv2.moveWindow("depth", 100, 100)
+#    cv2.waitKey(50)
+    #plt.plot(cv_img, "gray")
+#    if imageWindow == None:
+#        imageWindow = plt.imshow(cv_img, "gray")
+#    plt.imshow(cv_img, "gray")
+#    plt.show()
+
+#    imageWindow.set_data(cv_img)
+    #f.close()
+
+#
+#    hist = {200: [], 300: [], 400: [],500: [], 600: [], 700: [], 800: [], 900: [], 1000: [], 1100: [], 1200: [], 1300: []}
+#
+#    keys = hist.keys()
+#    keys.sort()
+#    for y in range(cv_img.shape[0]):
+#        for x in range(cv_img.shape[1]):
+#            i = 0
+#            found = False
+#            while i < len(hist) and not found:
+#                if cv_img[y][x] <= keys[i] and lowerBound <= cv_img[y][x] :
+#                    hist[keys[i]].append(cv_img[y][x])
+#                    found = True
+#                i += 1
+#
+##            for limit in hist:
+##                found = False
+##                if cv_img[y][x] <= limit and lowerBound <= cv_img[y][x] :
+##                    hist[limit].append(cv_img[y][x])
+#
+#    print(hist)
+#
+#    maxNum = 0
+#    lim = minDistance
+#    for limit in hist:
+#        l = len(hist[limit])
+#        if maxNum < l:
+#            maxNum = l
+#            lim = limit
+
+    #distance = lim
+    middle = (height // 2, width // 2)
+    vals = []
+    scanWindowHeight = 20
+    windows = range(scanWindowHeight)
+    for window in windows:
+        for x in range(cv_img.shape[1]):
+            vals.append(cv_img[middle[0] + window, x])
+            vals.append(cv_img[middle[0] - window, x])
+
+    distance = max(vals)
+
+#    distance = cv_img[middle[0], middle[1]]
+    print("Distance: ", distance)
+
+    speedToPub = 0
+    if not (distance < lowerBound or higherBound < distance):
+        if distance < minDistance:
+            print("Driving backwards!")
+            speedToPub = 100
+        elif maxDistance < distance: 
+            print("Driving forwards!")
+            speedToPub = -100
+        else:
+            print("Not moving!")
+#        odom = Odometry()
+#        odom = lastOdom
+#        odom.x = lastOdom.Pose.x + distance / 1000
+#        adjOdomPub.publish(odom)
+    else:
+        print("No obstacle detected! Not moving...")
+            
+    speedPub.publish(speedToPub)
+
+
+
+rospy.init_node("obs_avoidance")
+rospy.Subscriber("/app/camera/depth/image_raw", Image, imgCallback, queue_size=1)
+rospy.Subscriber("/odom", Odometry, odomCallback, queue_size=1)
+drivePub = rospy.Publisher("/manual_control/stop_start", Int16, queue_size=1)
+speedPub = rospy.Publisher("/manual_control/speed", Int16, queue_size=1)
+steerPub = rospy.Publisher("/manual_control/steering", Int16, queue_size=1)
+adjOdomPub = rospy.Publisher("/obstacle/pose/x", Float32, queue_size=1)
+
+print("Waiting for callback")
+
+
+rospy.spin()
