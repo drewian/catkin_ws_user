@@ -13,7 +13,7 @@ from time import sleep
 from math import atan2, sqrt
 #matplotlib.use('Agg')
 from matplotlib import pyplot as plt
-from IPython import display
+#from IPython import display
 
 
 realworld = {
@@ -35,9 +35,10 @@ scaled_dims = (dims[0] // scale_factor, dims[1] // scale_factor)
 
 is_green = lambda pix: pix[1] 
 
-def imgCallback(img_msg):
+def imgCallback():
     global bridge, skip_cluster_detection, scaled_dims, scale_factor, realworld, cameraMatrix
-    cv_img = bridge.compressed_imgmsg_to_cv2(img_msg)
+    #cv_img = bridge.compressed_imgmsg_to_cv2(img_msg)
+    cv_img = cv2.imread("center.png",cv2.IMREAD_COLOR)
     copy = cv_img
     cb, cg, cr = cv2.split(copy)
     cv_img = cv2.resize(cv_img, scaled_dims)
@@ -72,14 +73,15 @@ def imgCallback(img_msg):
     
     for y in range(cv_img.shape[0]):
         for x in range(cv_img.shape[1]):
-            is_green = 220 <= g[y, x]
-            is_red = 190 <= r[y, x] and b[y, x] <= 220
-            is_blue = 190 <= b[y, x] and r[y, x] <= 220
-            is_white = 180 <= g[y, x] and 180 <= b[y, x]
-            is_purple = (not is_white) and 190 <= r[y, x] and 190 <= b[y, x]
+            is_green = 150 <= g[y, x] and r[y, x] <= 120 and b[y, x] <= 120
+            is_red = 180 <= r[y, x] and g[y, x] <= 150 and b[y, x] <= 150
+            is_blue = 180 <= b[y, x] and r[y, x] <= 150 and g[y, x] <= 150
+            #is_white = 180 <= g[y, x] and 180 <= b[y, x]
+            is_purple = 180 <= b[y, x] and 180 <= r[y, x] and g[y, x] <= 150
+#(not is_white) and
 
-            if is_white:
-                continue
+            """if is_white:
+                continue"""
             if is_blue:
                 colors["blue"].append((x, y))
             elif is_red:
@@ -96,8 +98,8 @@ def imgCallback(img_msg):
     for color in colors:
         if len(colors[color]) == 0:
             continue
+	color_pos_means[color] = (0, 0)
         for tup in colors[color]:
-            color_pos_means[color] = (0, 0)
             color_pos_means[color] = tuple_sum(color_pos_means[color], tup)
         color_pos_means[color] = (scale*color_pos_means[color][0] / len(colors[color]), scale * color_pos_means[color][1] / len(colors[color]))
 
@@ -106,11 +108,12 @@ def imgCallback(img_msg):
 #    for color in color_pos_means:
 #        center = tuple_sum(center, color_pos_means[color])
 
-    color_pos_means = {
+    """color_pos_means = {
             "blue": (320, 98),
             "red": (466, 120),
             "green": (316, 215),
             "purple": (470, 218)}
+"""
     print color_pos_means
 
     #color_pos_means["center"] = center
@@ -138,10 +141,13 @@ def imgCallback(img_msg):
         print("Not enough points detected in image!")
 
 
-rospy.init_node("visual_gps")
+#rospy.init_node("visual_gps")
 #rospy.Subscriber("/usb_cam/image_color/compressed", CompressedImage, imgCallback, queue_size=1)
-rospy.Subscriber("/image_processing/image_raw", CompressedImage, imgCallback, queue_size=1)
+#rospy.Subscriber("/image_processing/image_raw", CompressedImage, imgCallback, queue_size=1)
 
-rospy.spin()
+#rospy.spin()
+while True:
+    imgCallback()
+    rospy.sleep(5)
 
 
