@@ -22,16 +22,16 @@
 # scaled_dims = (dims[0] // scale_factor, dims[1] // scale_factor)
 
 # def imgCallback():
-#     global bridge, skip_cluster_detection, scaled_dims, scale_factor
-#     #cv_img = bridge.compressed_imgmsg_to_cv2(img_msg)
-#     cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
-#     cb, cg, cr = cv2.split(cv_img)
+# 	global bridge, skip_cluster_detection, scaled_dims, scale_factor
+# 	#cv_img = bridge.compressed_imgmsg_to_cv2(img_msg)
+# 	cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
+# 	cb, cg, cr = cv2.split(cv_img)
 
-#     cv_img = cv2.resize(cv_img, scaled_dims)
-#     cv2.imshow("lidec", copy)
+# 	cv_img = cv2.resize(cv_img, scaled_dims)
+# 	cv2.imshow("lidec", copy)
 
-#    	#cv_img-cv2.cvtColor(cv_img,cv2.COLOR_BGR2GRAY)
-	
+# 	#cv_img-cv2.cvtColor(cv_img,cv2.COLOR_BGR2GRAY)
+
 import cv2
 import numpy as np
 
