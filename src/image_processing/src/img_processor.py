@@ -39,6 +39,7 @@ def imgCallback():
     global bridge, skip_cluster_detection, scaled_dims, scale_factor, realworld, cameraMatrix
     #cv_img = bridge.compressed_imgmsg_to_cv2(img_msg)
     cv_img = cv2.imread("center.png",cv2.IMREAD_COLOR)
+#gps_screenshot_09.08.2017.png
     copy = cv_img
     cb, cg, cr = cv2.split(copy)
     cv_img = cv2.resize(cv_img, scaled_dims)
@@ -73,11 +74,11 @@ def imgCallback():
     
     for y in range(cv_img.shape[0]):
         for x in range(cv_img.shape[1]):
-            is_green = 150 <= g[y, x] and r[y, x] <= 120 and b[y, x] <= 120
-            is_red = 180 <= r[y, x] and g[y, x] <= 150 and b[y, x] <= 150
-            is_blue = 180 <= b[y, x] and r[y, x] <= 150 and g[y, x] <= 150
+            is_green = 150 <= g[y, x] and r[y, x] <= 100 and b[y, x] <= 100
+            is_red = 180 <= r[y, x] and g[y, x] <= 140 and b[y, x] <= 140
+            is_blue = 180 <= b[y, x] and r[y, x] <= 140 and g[y, x] <= 140
             #is_white = 180 <= g[y, x] and 180 <= b[y, x]
-            is_purple = 180 <= b[y, x] and 180 <= r[y, x] and g[y, x] <= 150
+            is_purple = 190 <= b[y, x] and 190 <= r[y, x] and g[y, x] <= 160
 #(not is_white) and
 
             """if is_white:
