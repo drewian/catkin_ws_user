@@ -38,7 +38,7 @@ import numpy as np
 def imgCallback():
 	cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
 	cv_img = cv2.resize(cv_img, scaled_dims)
-    cv2.imshow("lidec", copy)
+	cv2.imshow("lidec", copy)
 	gray = cv2.cvtColor(cv_img,cv2.COLOR_BGR2GRAY)
 	hsv = cv2.cvtColor(cv_img,cv2.COLOR_BGR2HSV)
 	# define range of blue color in HSV
