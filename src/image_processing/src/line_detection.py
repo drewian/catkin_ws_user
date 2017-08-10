@@ -55,4 +55,5 @@ def imgCallback():
 	# cv2.imshow('frame',frame)
 	cv2.imshow('mask',mask)
 	cv2.imshow('res',res)
+	cv2.waitKey(0)
 # cv2.destroyAllWindows()
