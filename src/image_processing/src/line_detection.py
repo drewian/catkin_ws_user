@@ -36,8 +36,8 @@ import cv2
 import numpy as np
 
 def imgCallback():
-    cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
-    cv_img = cv2.resize(cv_img, scaled_dims)
+	cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
+	cv_img = cv2.resize(cv_img, scaled_dims)
     cv2.imshow("lidec", copy)
 	gray = cv2.cvtColor(cv_img,cv2.COLOR_BGR2GRAY)
 	hsv = cv2.cvtColor(cv_img,cv2.COLOR_BGR2HSV)
@@ -55,5 +55,4 @@ def imgCallback():
 	# cv2.imshow('frame',frame)
 	cv2.imshow('mask',mask)
 	cv2.imshow('res',res)
-
 # cv2.destroyAllWindows()
