@@ -45,6 +45,9 @@ def imgCallback():
 	lower_white_rgb = np.array([200,200,200])
 	upper_white_rgb = np.array([245,245,245])
 	white_rgb = cv2.inRange(cv_img,lower_white_rgb,upper_white_rgb)
+	lower_white=np.array([0,0,0])
+	upper_white=np.array([0,0,255])
+	mask_white=cv2.inRange(hsv,lower_white,upper_white)
 
 	lower_blue = np.array([110,50,50])
 	upper_blue = np.array([130,255,255])
@@ -73,8 +76,9 @@ def imgCallback():
 	mask_white = cv2.inRange(hsv, lower_white, upper_white)
 	res_white = cv2.bitwise_and(cv_img,cv_img,mask= mask_white)
 	
-	#cv2.imshow('gray',gray)
-	#cv2.imshow('hsv',hsv)
+	
+	cv2.imshow('gray',gray)
+	cv2.imshow('hsv',hsv)
 	#cv2.imshow('mask_green',mask_green)
 	#cv2.imshow('res_green',res_green)
 	#cv2.imshow('mask_red',mask_red)
@@ -84,7 +88,8 @@ def imgCallback():
 	cv2.imshow('res',res)
 	cv2.imshow('white_rgb',white_rgb)
 	#cv2.imshow('res_white',res_white)
-	#cv2.imshow('hls',hls)
+	cv2.imshow('hls',hls)
+	cv2.imshow('mask_white',mask_white)
 	cv2.waitKey(0)
 imgCallback()
 # cv2.destroyAllWindows()
