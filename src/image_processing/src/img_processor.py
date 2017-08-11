@@ -34,8 +34,7 @@ scaled_dims = (dims[0] // scale_factor, dims[1] // scale_factor)
 lastKnownPos = (0, 0, 0)
 
 def imgCallback(img_msg):
-    global bridge, skip_cluster_detection, scaled_dims, scale_factor,
-    realworld, cameraMatrix, lastKnownPos
+    global bridge, skip_cluster_detection, scaled_dims, scale_factor, realworld, cameraMatrix, lastKnownPos
     cv_img = bridge.imgmsg_to_cv2(img_msg, "bgr8")
     #cv_img = bridge.compressed_imgmsg_to_cv2(img_msg, "bgr8")
     copy = cv_img
