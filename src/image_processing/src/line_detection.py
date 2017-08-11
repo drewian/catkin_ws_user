@@ -45,6 +45,9 @@ def imgCallback():
 	lower_white_rgb = np.array([200,200,200])
 	upper_white_rgb = np.array([245,245,245])
 	white_rgb = cv2.inRange(cv_img,lower_white_rgb,upper_white_rgb)
+	img_erosion = cv2.erode(white_rgb, kernel, iterations=1)
+	img_dilation = cv2.dilate(white_rgb, kernel, iterations=1)
+
 	lower_white=np.array([0,0,0])
 	upper_white=np.array([0,0,255])
 	mask_white=cv2.inRange(hsv,lower_white,upper_white)
