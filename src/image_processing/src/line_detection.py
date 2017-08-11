@@ -36,6 +36,7 @@ import cv2
 import numpy as np
 
 def imgCallback():
+	kernel=np.ones((5,5),np.uint8)
 	cv_img = cv2.imread("lane1.png",cv2.IMREAD_COLOR)
 	#cv_img = cv2.resize(cv_img, scaled_dims)
 	#cv2.imshow("lidec", copy)
@@ -47,6 +48,8 @@ def imgCallback():
 	white_rgb = cv2.inRange(cv_img,lower_white_rgb,upper_white_rgb)
 	img_erosion = cv2.erode(white_rgb, kernel, iterations=1)
 	img_dilation = cv2.dilate(white_rgb, kernel, iterations=1)
+	cv2.imshow('ero',img_erosion)
+	cv2.imshow('dil',img_dilation)
 
 	lower_white=np.array([0,0,0])
 	upper_white=np.array([0,0,255])
@@ -80,19 +83,19 @@ def imgCallback():
 	res_white = cv2.bitwise_and(cv_img,cv_img,mask= mask_white)
 	
 	
-	cv2.imshow('gray',gray)
-	cv2.imshow('hsv',hsv)
+	#cv2.imshow('gray',gray)
+	#cv2.imshow('hsv',hsv)
 	#cv2.imshow('mask_green',mask_green)
 	#cv2.imshow('res_green',res_green)
 	#cv2.imshow('mask_red',mask_red)
 	#cv2.imshow('res_red',res_red)
-	cv2.imshow('mask',mask)
+	#cv2.imshow('mask',mask)
 	#cv2.imshow('mask_white',mask_white)
-	cv2.imshow('res',res)
+	#cv2.imshow('res',res)
 	cv2.imshow('white_rgb',white_rgb)
 	#cv2.imshow('res_white',res_white)
-	cv2.imshow('hls',hls)
-	cv2.imshow('mask_white',mask_white)
+	#cv2.imshow('hls',hls)
+	#cv2.imshow('mask_white',mask_white)
 	cv2.waitKey(0)
 imgCallback()
 # cv2.destroyAllWindows()
