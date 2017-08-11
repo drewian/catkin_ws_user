@@ -26,22 +26,26 @@ def imgCallback():
 
 	cv2.moveWindow("gps", 100, 100)
 
-	cv2.waitKey(10)
 
-	lower_blue=np.array([110,100,100])
+	lower_blue=np.array([105,80,80])
 	upper_blue=np.array([130,255,255])
-	lower_green=np.array([50,100,100])
-	upper_green=np.array([70,255,255])
-	lower_red=np.array([0,100,100])
-	upper_red=np.array([20,255,255])
+	lower_green=np.array([45,80,80])
+	upper_green=np.array([75,255,255])
+	lower_red=np.array([0,80,80])
+	upper_red=np.array([30,255,255])
+	lower_purple=np.array([135,80,80])
+	upper_purple=np.array([165,255,255])
+	hsv = cv2.cvtColor(cv_img,cv2.COLOR_BGR2HSV)
 	
-	mask_blue=cv2.inRange(cv_img,lower_blue,upper_blue)
-	mask_green=cv2.inRange(cv_img,lower_green,upper_green)
-	mask_red=cv2,inRange(cv_img,lower_red,upper_red)
+	mask_blue=cv2.inRange(hsv,lower_blue,upper_blue)
+	mask_green=cv2.inRange(hsv,lower_green,upper_green)
+	mask_red=cv2.inRange(hsv,lower_red,upper_red)
+	mask_purple=cv2.inRange(hsv,lower_purple,upper_purple)
 	cv2.imshow('blue',mask_blue)
 	cv2.imshow('green',mask_green)
 	cv2.imshow('red',mask_red)
-	cv2.waitKey(10)
+	cv2.imshow('purple',mask_purple)
+	cv2.waitKey(0)
 
 
 imgCallback()
