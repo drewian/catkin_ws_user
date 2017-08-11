@@ -38,22 +38,16 @@ def imgCallback(img_msg):
     realworld, cameraMatrix, lastKnownPos
     cv_img = bridge.imgmsg_to_cv2(img_msg, "bgr8")
     #cv_img = bridge.compressed_imgmsg_to_cv2(img_msg, "bgr8")
-    cv_img = cv2.undistort(cv_img, cameraMatrix, distortion)
     copy = cv_img
-    cb, cg, cr = cv2.split(copy)
+    cv_img = cv2.undistort(cv_img, cameraMatrix, distortion)
     cv_img = cv2.resize(cv_img, scaled_dims)
     #copy = cv2.cvtColor(cv_img, cv2.COLOR_BGR2HSV)
-    cv2.imshow("gps", cv_img)
 
-    circles = cv2.HoughCircles(cg, cv2.HOUGH_GRADIENT, 1, 20, param1=50, param2=20, minRadius=4, maxRadius=0)
+#    cv2.imshow("gps", copy)
+#    cv2.imshow("gps_undist", cv_img)
+#    cv2.moveWindow("gps", 100, 100)
+#    cv2.waitKey(50)
 
-    #print("CIRCLES: ", circles)
-
-    cv2.moveWindow("gps", 100, 100)
-    cv2.waitKey(50)
-
-    if skip_cluster_detection:
-        return
     colors = {"green": [], "red": [], "blue": [], "purple": []}
 
     b, g, r = cv2.split(cv_img)
