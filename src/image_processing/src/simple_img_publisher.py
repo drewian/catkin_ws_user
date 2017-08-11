@@ -25,7 +25,7 @@ class simple_pub:
     self.bridge = CvBridge()
     #self.image_sub = rospycentercriber("/app/camera/rgb/image_raw",Image,self.callback, queue_size=1)
 
-    self.img = cv2.imread("center.png", cv2.IMREAD_COLOR)
+    self.img = cv2.imread("image4.png", cv2.IMREAD_COLOR)
     self.bridge = CvBridge()
     self.img = self.bridge.cv2_to_compressed_imgmsg(self.img)#, "bgr8")
 
@@ -34,7 +34,7 @@ class simple_pub:
     while True:
       self.image_pub.publish(self.img)
       print("Published image")
-      sleep(5)
+      sleep(0.2)
 
 
 if __name__ == "__main__":

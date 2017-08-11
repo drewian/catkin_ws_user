@@ -1,0 +1,34 @@
+
+#    center = (0, 0)
+#    for color in color_pos_means:
+#        center = tuple_sum(center, color_pos_means[color])
+
+#    color_pos_means = {
+#            "blue": (322, 89),
+#            "red": (480, 107),
+#            "green": (318, 209),
+#            "purple": (478, 218)}
+    # green center
+#    color_pos_means = {
+#            "blue": (322, 88),
+#            "red": (507, 96),
+#            "green": (318, 215),
+#            "purple": (497, 218)}
+#    # blue center
+#    color_pos_means = {
+#            "blue": (334, 227),
+#            "red": (173, 225),
+#            "green": (337, 112),
+#            "purple": (184, 118)}
+    # red center
+#    color_pos_means = {
+#            "blue": (540, 240),
+#            "red": (335, 240),
+#            "green": (537, 118),
+#            "purple": (341, 120)}
+    # purple center
+#    color_pos_means = {
+#            "blue": (186, 115),
+#            "red": (334, 109),
+#            "green": (176, 222),
+#            "purple": (336, 229)}
